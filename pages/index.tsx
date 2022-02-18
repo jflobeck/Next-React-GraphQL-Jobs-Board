@@ -1,10 +1,8 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import React, { FC, useState } from "react";
 import JobResults from "../components/JobResults";
 import JobsQuery from "../queries/jobsQuery";
 import SelectedJob from "../components/SelectedJob";
-// import { JobObject } from "../types/JobObject";
 
 export type JobObject = {
   applyUrl: string;
@@ -23,8 +21,7 @@ type HomeProps = {
   jobs: Partial<JobObject>[];
 };
 const Home: FC<HomeProps> = ({ jobs }) => {
-  // console.log("jobs:", jobs);
-  const [activeJob, setActiveJob] = useState(0);
+  const [activeJob, setActiveJob] = useState(jobs[0]);
   const [queryState, setQueryState] = useState({
     term: "",
   });
@@ -40,7 +37,7 @@ const Home: FC<HomeProps> = ({ jobs }) => {
 
     setFilteredList(
       jobs.filter((job, i) => {
-        const tags = job.tags?.[i].name.toLowerCase();
+        const tags = job.tags?.[i]?.name.toLowerCase();
         const titles = job.title?.toLowerCase();
         if (!queryState.term) {
           return jobs;
@@ -80,18 +77,11 @@ const Home: FC<HomeProps> = ({ jobs }) => {
               placeholder="Filter by Language or Job Title"
               className="flex-grow p-4"
             />
-
-            <button
-              type="submit"
-              className="flex-none bg-emerald-700 hover:bg-emerald-900 hover:text-white py-4 px-8"
-            >
-              Search
-            </button>
           </form>
         </div>
         <JobResults
           jobsList={filteredList}
-          onJobSelect={(i: number) => setActiveJob(i)}
+          onJobSelect={(i: number) => setActiveJob(filteredList[i])}
         />
       </div>
       <SelectedJob activeJob={activeJob} jobsList={filteredList} />

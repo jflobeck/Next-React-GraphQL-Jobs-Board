@@ -1,5 +1,4 @@
-import { NextPage } from "next";
-import React from "react";
+import React, { FC } from "react";
 import Image from "next/image";
 import { JobObject } from "../pages/index";
 
@@ -7,7 +6,7 @@ type JobResultsProps = {
   jobsList: Partial<JobObject>[];
   onJobSelect: Function;
 };
-const JobResults: NextPage<JobResultsProps> = ({ jobsList, onJobSelect }) => {
+const JobResults: FC<JobResultsProps> = ({ jobsList, onJobSelect }) => {
   return (
     <div className="flex flex-col justify-center">
       {jobsList.map((job, i) => {
@@ -29,14 +28,16 @@ const JobResults: NextPage<JobResultsProps> = ({ jobsList, onJobSelect }) => {
               scrollToTop();
             }}
           >
-            <div className="flex">
+            <div className="flex items-center">
               {job.company?.logoUrl ? (
-                <Image
-                  src={job.company.logoUrl}
-                  alt={job.company.name}
-                  width={100}
-                  height={100}
-                />
+                <div>
+                  <Image
+                    src={job.company.logoUrl}
+                    alt={job.company.name}
+                    width={100}
+                    height={100}
+                  />
+                </div>
               ) : (
                 <div className="p-6 bg-emerald-600 w-24 h-24 self-center text-center text-white text-4xl">
                   {companyLetter}
